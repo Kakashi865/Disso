@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Mar 08, 2020 at 01:06 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.3
+-- Host: 127.0.0.1:3306
+-- Generation Time: Aug 14, 2020 at 12:44 PM
+-- Server version: 10.4.13-MariaDB
+-- PHP Version: 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -28,12 +28,16 @@ SET time_zone = "+00:00";
 -- Table structure for table `answers`
 --
 
-CREATE TABLE `answers` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `answers`;
+CREATE TABLE IF NOT EXISTS `answers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `question_id` int(11) NOT NULL,
-  `answer` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `answer` text NOT NULL,
+  PRIMARY KEY (`id`,`question_id`),
+  KEY `question_id` (`question_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -41,10 +45,26 @@ CREATE TABLE `answers` (
 -- Table structure for table `images`
 --
 
-CREATE TABLE `images` (
-  `id` int(11) NOT NULL,
-  `image_url` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `images`;
+CREATE TABLE IF NOT EXISTS `images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `image_url` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `images`
+--
+
+INSERT INTO `images` (`id`, `image_url`) VALUES
+(1, 'images/CSB.png'),
+(2, 'images/CSG.png'),
+(3, 'images/FB.png'),
+(4, 'images/FG.png'),
+(5, 'images/LOB.png'),
+(6, 'images/LOG.png'),
+(7, 'images/UIB.png'),
+(8, 'images/UIG.png');
 
 -- --------------------------------------------------------
 
@@ -52,12 +72,16 @@ CREATE TABLE `images` (
 -- Table structure for table `image_answers`
 --
 
-CREATE TABLE `image_answers` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `image_answers`;
+CREATE TABLE IF NOT EXISTS `image_answers` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `image_id` int(11) NOT NULL,
-  `answer` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `answer` int(11) NOT NULL,
+  PRIMARY KEY (`id`,`user_id`,`image_id`),
+  KEY `user_id` (`user_id`),
+  KEY `image_id` (`image_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=417 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -65,10 +89,21 @@ CREATE TABLE `image_answers` (
 -- Table structure for table `practice_images`
 --
 
-CREATE TABLE `practice_images` (
-  `id` int(11) NOT NULL,
-  `image_url` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `practice_images`;
+CREATE TABLE IF NOT EXISTS `practice_images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `image_url` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `practice_images`
+--
+
+INSERT INTO `practice_images` (`id`, `image_url`) VALUES
+(1, 'images/practiceduck.webp'),
+(2, 'images/practiceamazon.png'),
+(4, 'images/practicecommerce.png');
 
 -- --------------------------------------------------------
 
@@ -76,10 +111,23 @@ CREATE TABLE `practice_images` (
 -- Table structure for table `questions`
 --
 
-CREATE TABLE `questions` (
-  `id` int(11) NOT NULL,
-  `question` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+DROP TABLE IF EXISTS `questions`;
+CREATE TABLE IF NOT EXISTS `questions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `questions`
+--
+
+INSERT INTO `questions` (`id`, `question`) VALUES
+(1, 'How often do you use the internet per week?<br>\r\n•	0-2hrs <br> \r\n•	3-7hrs <br>	\r\n•	8-11hrs <br>\r\n•	12-20hrs <br>\r\n•	20hrs+ <br>\r\n'),
+(2, 'How often do you use e-commerce webpages? <br>\r\n•	Once a day <br>\r\n•	2-4 days per week <br>\r\n•	Once a week <br>\r\n•	Once every 2 weeks <br>\r\n•	Once a month or less <br>\r\n'),
+(4, 'What webpage feature would incline you to buy from an e-commerce webpage? \r\n <br>\r\n•	Good colour scheme<br>\r\n•	Good layout<br>\r\n•	Easy usability<br>\r\n•	Good font<br>\r\n'),
+(5, 'Can you list any features that would incline you to purchase from an e-commerce webpage that we may have missed? <br>'),
+(6, 'Have you seen any of the webpages shown previously? <br>');
 
 -- --------------------------------------------------------
 
@@ -87,96 +135,14 @@ CREATE TABLE `questions` (
 -- Table structure for table `users`
 --
 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
-  `age` int(11) NOT NULL,
-  `gender` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `answers`
---
-ALTER TABLE `answers`
-  ADD PRIMARY KEY (`id`,`question_id`),
-  ADD KEY `question_id` (`question_id`),
-  ADD KEY `user_id` (`user_id`);
-
---
--- Indexes for table `images`
---
-ALTER TABLE `images`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `image_answers`
---
-ALTER TABLE `image_answers`
-  ADD PRIMARY KEY (`id`,`user_id`,`image_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `image_id` (`image_id`);
-
---
--- Indexes for table `practice_images`
---
-ALTER TABLE `practice_images`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `questions`
---
-ALTER TABLE `questions`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `answers`
---
-ALTER TABLE `answers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `images`
---
-ALTER TABLE `images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `image_answers`
---
-ALTER TABLE `image_answers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `practice_images`
---
-ALTER TABLE `practice_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `questions`
---
-ALTER TABLE `questions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  `gender` text DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=latin1;
 
 --
 -- Constraints for dumped tables
